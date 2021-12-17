@@ -1,0 +1,24 @@
+version: '2'
+services:
+  mysql:
+        image: mysql:8.0
+        container_name: mysqli
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+          - ./MySQL:/var/lib/mysql
+        restart: unless-stopped
+        environment:
+          - MYSQL_ROOT_PASSWORD=password
+          - MYSQL_DATABASE=csss
+        ports:
+          - "3307:3306"
+  apache-php:
+    container_name: apache-phpi
+    build:
+      context: ./
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - 89:80
+    depends_on:
+      - mysql
